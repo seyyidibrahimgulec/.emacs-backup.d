@@ -4,22 +4,17 @@
     "Export code blocks from my literate config file."
     (when (equal (buffer-file-name) config-org)
       (org-babel-tangle-file config-org config-el)))
- 
+
   (add-hook 'after-save-hook 'tangle-config)
 #+end_src
- 
+
 * Paket kaynakları
 #+BEGIN_SRC emacs-lisp
   (require 'package)
   (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                           ("melpa" . "https://melpa.org/packages/")
-                           ("org" . "https://orgmode.org/elpa/")))
+			   ("melpa" . "https://melpa.org/packages/")
+			   ("org" . "https://orgmode.org/elpa/")))
   (package-initialize)
-#+END_SRC
- 
-* Theme
-#+BEGIN_SRC emacs-lisp
-  (load-theme 'leuven t)
 #+END_SRC
 
 * Mac Key Bindings
@@ -27,11 +22,11 @@
   (setq inhibit-startup-message t)
 
   (setq mac-option-key-is-meta nil
-        mac-command-key-is-meta t
-        mac-command-modifier 'meta
-        mac-option-modifier 'none)
+	mac-command-key-is-meta t
+	mac-command-modifier 'meta
+	mac-option-modifier 'none)
 #+END_SRC
- 
+
 * Paketler
 ** Use Package
 #+begin_src emacs-lisp
@@ -41,7 +36,7 @@
   (require 'use-package-ensure)
     (setq use-package-always-ensure t)
 #+end_src
- 
+
 ** Doom modeline
 #+begin_src emacs-lisp
   (use-package doom-modeline
@@ -50,3 +45,33 @@
     (setq doom-modeline-vcs-max-length 30)
     (doom-modeline-mode 1))
 #+end_src
+
+** Theme
+#+BEGIN_SRC emacs-lisp
+  (use-package doom-themes
+    :config
+    (load-theme 'doom-spacegrey t))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (use-package poet-theme
+    :defer t)
+#+END_SRC
+
+** Helm
+#+BEGIN_SRC emacs-lisp
+  (use-package helm
+    :bind
+    ("M-x" . helm-M-x))
+#+END_SRC
+
+** Better Defaults
+#+BEGIN_SRC emacs-lisp
+  (use-package better-defaults)
+#+END_SRC
+* Temporary
+#+BEGIN_SRC emacs-lisp
+  ;; Use shell-like backspace C-h, rebind help to C-?
+  (define-key key-translation-map [?\C-h] [?\C-?])
+  (bind-key* (kbd "C-?") 'help-command)
+#+END_SRC

@@ -52,5 +52,6 @@ flycheck_*.el
 /network-security.data
 
 README.el
+places
 
 # End of https://www.gitignore.io/api/emacs
