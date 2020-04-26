@@ -119,6 +119,24 @@
 	   ("C-S-p" . mc/unmark-next-like-this)
 	   ("C-M-<mouse-1>" . mc/add-cursor-on-click)))
 #+END_SRC
+** Company
+#+BEGIN_SRC emacs-lisp
+  ;; TODO: Add configuration
+  (use-package company)
+  (use-package company-box)
+#+END_SRC
+** LSP Mode
+*** LSP Mode
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-mode
+    :defer t)
+#+END_SRC
+*** Company LSP
+#+BEGIN_SRC emacs-lisp
+  (use-package company-lsp
+    :commands company-lsp)
+#+END_SRC
+
 * Better Defaults
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-message t)
