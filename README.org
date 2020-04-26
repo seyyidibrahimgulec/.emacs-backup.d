@@ -1,0 +1,52 @@
+* Applying Changes
+#+begin_src emacs-lisp
+  (defun tangle-config ()
+    "Export code blocks from my literate config file."
+    (when (equal (buffer-file-name) config-org)
+      (org-babel-tangle-file config-org config-el)))
+ 
+  (add-hook 'after-save-hook 'tangle-config)
+#+end_src
+ 
+* Paket kaynakları
+#+BEGIN_SRC emacs-lisp
+  (require 'package)
+  (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                           ("melpa" . "https://melpa.org/packages/")
+                           ("org" . "https://orgmode.org/elpa/")))
+  (package-initialize)
+#+END_SRC
+ 
+* Theme
+#+BEGIN_SRC emacs-lisp
+  (load-theme 'leuven t)
+#+END_SRC
+
+* Mac Key Bindings
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-startup-message t)
+
+  (setq mac-option-key-is-meta nil
+        mac-command-key-is-meta t
+        mac-command-modifier 'meta
+        mac-option-modifier 'none)
+#+END_SRC
+ 
+* Paketler
+** Use Package
+#+begin_src emacs-lisp
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+  (require 'use-package-ensure)
+    (setq use-package-always-ensure t)
+#+end_src
+ 
+** Doom modeline
+#+begin_src emacs-lisp
+  (use-package doom-modeline
+    :init
+    (setq doom-modeline-buffer-encoding nil)
+    (setq doom-modeline-vcs-max-length 30)
+    (doom-modeline-mode 1))
+#+end_src
