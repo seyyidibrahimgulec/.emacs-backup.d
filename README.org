@@ -1,148 +1,160 @@
 * Applying Changes
-#+begin_src emacs-lisp
-  (defun tangle-config ()
-    "Export code blocks from my literate config file."
-    (when (equal (buffer-file-name) config-org)
-      (org-babel-tangle-file config-org config-el)))
+  #+begin_src emacs-lisp
+    (defun tangle-config ()
+      "Export code blocks from my literate config file."
+      (when (equal (buffer-file-name) config-org)
+	(org-babel-tangle-file config-org config-el)))
 
-  (add-hook 'after-save-hook 'tangle-config)
-#+end_src
+    (add-hook 'after-save-hook 'tangle-config)
+  #+end_src
 
 * Package Resources
-#+BEGIN_SRC emacs-lisp
-  (require 'package)
-  (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-			   ("melpa" . "https://melpa.org/packages/")
-			   ("org" . "https://orgmode.org/elpa/")))
-  (package-initialize)
-#+END_SRC
+  #+BEGIN_SRC emacs-lisp
+    (require 'package)
+    (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+			     ("melpa" . "https://melpa.org/packages/")
+			     ("org" . "https://orgmode.org/elpa/")))
+    (package-initialize)
+  #+END_SRC
 
 * Macos Key Bindings
-#+BEGIN_SRC emacs-lisp
-  (setq mac-option-key-is-meta nil
-	mac-command-key-is-meta t
-	mac-command-modifier 'meta
-	mac-option-modifier 'none)
-#+END_SRC
+  #+BEGIN_SRC emacs-lisp
+    (setq mac-option-key-is-meta nil
+	  mac-command-key-is-meta t
+	  mac-command-modifier 'meta
+	  mac-option-modifier 'none)
+  #+END_SRC
 
 * Packages
 ** Use Package
-#+begin_src emacs-lisp
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
-  (require 'use-package-ensure)
-    (setq use-package-always-ensure t)
-#+end_src
+   #+begin_src emacs-lisp
+     (unless (package-installed-p 'use-package)
+       (package-refresh-contents)
+       (package-install 'use-package))
+     (require 'use-package-ensure)
+     (setq use-package-always-ensure t)
+   #+end_src
 
 ** Doom modeline
-#+begin_src emacs-lisp
-  (use-package doom-modeline
-    :init
-    (setq doom-modeline-buffer-encoding nil)
-    (setq doom-modeline-vcs-max-length 30)
-    (doom-modeline-mode 1))
-#+end_src
+   #+begin_src emacs-lisp
+     (use-package doom-modeline
+       :init
+       (setq doom-modeline-buffer-encoding nil)
+       (setq doom-modeline-vcs-max-length 30)
+       (doom-modeline-mode 1))
+   #+end_src
 
 ** Theme
-#+BEGIN_SRC emacs-lisp
-  (use-package color-theme-sanityinc-tomorrow)
-#+END_SRC
+   #+BEGIN_SRC emacs-lisp
+     (use-package color-theme-sanityinc-tomorrow)
+   #+END_SRC
 
 ** Helm
 *** Helm
-#+BEGIN_SRC emacs-lisp
-  (use-package helm
-    :bind
-    ("M-x" . helm-M-x))
-#+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (use-package helm
+	:bind
+	(("M-x" . helm-M-x)
+	 ("C-x C-f" . helm-find-files)
+	 ("C-x C-b" . helm-buffers-list)
+	 ("C-x b" . helm-buffers-list)
+	 ("C-x C-r" . helm-recentf)
+	 ("C-x C-i" . helm-imenu)
+	 ("M-y" . helm-show-kill-ring)
+	 :map helm-map
+	 ("TAB" . helm-execute-persistent-action)
+	 ("<tab>" . helm-execute-persistent-action)
+	 ("C-z" . helm-select-action)
+	 ("C-w" . backward-kill-word))
+	)
+    #+END_SRC
 *** Helm Projectile
-#+BEGIN_SRC emacs-lisp
-  (use-package helm-projectile
-    :bind ("C-x f" . helm-projectile))
-#+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (use-package helm-projectile
+	:bind ("C-x f" . helm-projectile))
+    #+END_SRC
 ** Org
-#+BEGIN_SRC emacs-lisp
-  (setq org-src-tab-acts-natively t)
-  (use-package org-bullets
-    :hook
-    (org-mode . org-bullets-mode))
-#+END_SRC
+   #+BEGIN_SRC emacs-lisp
+     (setq org-src-tab-acts-natively t)
+     (use-package org-bullets
+       :hook
+       (org-mode . org-bullets-mode))
+   #+END_SRC
 
 ** Beacon
-#+BEGIN_SRC emacs-lisp
-  (use-package beacon
-    :init
-    (setq beacon-blink-when-point-moves-vertically 10)
-    (beacon-mode 1))
-#+END_SRC
+   #+BEGIN_SRC emacs-lisp
+     (use-package beacon
+       :init
+       (setq beacon-blink-when-point-moves-vertically 10)
+       (beacon-mode 1))
+   #+END_SRC
 ** Shackle
-#+BEGIN_SRC emacs-lisp
-(use-package shackle
-  :init
-  (setq shackle-rules
-        '(("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.3)
-          (help-mode :align t :size 0.4 :select t)))
-  :defer nil
-  :config
-  (shackle-mode))
-#+END_SRC
+   #+BEGIN_SRC emacs-lisp
+     (use-package shackle
+       :init
+       (setq shackle-rules
+	     '(("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.3)
+	       (help-mode :align t :size 0.4 :select t)))
+       :defer nil
+       :config
+       (shackle-mode))
+   #+END_SRC
 ** Expand Region
-#+BEGIN_SRC emacs-lisp
-(use-package expand-region
-  :init
-  (setq expand-region-fast-keys-enabled nil
-        expand-region-subword-enabled t)
-  :bind (("C-t" . er/expand-region)))
-#+END_SRC
+   #+BEGIN_SRC emacs-lisp
+     (use-package expand-region
+       :init
+       (setq expand-region-fast-keys-enabled nil
+	     expand-region-subword-enabled t)
+       :bind (("C-t" . er/expand-region)))
+   #+END_SRC
 ** Multiple Cursors
-#+BEGIN_SRC emacs-lisp
-(use-package multiple-cursors
-  :init (setq mc/always-run-for-all t)
-  :bind (("C-M-n" . mc/mark-next-like-this)
-         ("C-M-p" . mc/mark-previous-like-this)
-         ("C-M-S-n" . mc/skip-to-next-like-this)
-         ("C-M-S-p" . mc/skip-to-previous-like-this)
-         ("C-S-n" . mc/unmark-previous-like-this)
-         ("C-S-p" . mc/unmark-next-like-this)
-         ("C-M-<mouse-1>" . mc/add-cursor-on-click)))
-#+END_SRC
+   #+BEGIN_SRC emacs-lisp
+     (use-package multiple-cursors
+       :init (setq mc/always-run-for-all t)
+       :bind (("C-M-n" . mc/mark-next-like-this)
+	      ("C-M-p" . mc/mark-previous-like-this)
+	      ("C-M-S-n" . mc/skip-to-next-like-this)
+	      ("C-M-S-p" . mc/skip-to-previous-like-this)
+	      ("C-S-n" . mc/unmark-previous-like-this)
+	      ("C-S-p" . mc/unmark-next-like-this)
+	      ("C-M-<mouse-1>" . mc/add-cursor-on-click)))
+   #+END_SRC
 * Better Defaults
-#+BEGIN_SRC emacs-lisp
-  (setq inhibit-startup-message t)
-  (winner-mode)
-  (setq-default custom-file (concat user-emacs-directory ".custom.el"))
-  (load custom-file)
+  #+BEGIN_SRC emacs-lisp
+    (setq inhibit-startup-message t)
+    (winner-mode)
+    (setq-default custom-file (concat user-emacs-directory ".custom.el"))
+    (load custom-file)
 
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (blink-cursor-mode -1)
-#+END_SRC
+    (menu-bar-mode -1)
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)
+    (blink-cursor-mode -1)
+  #+END_SRC
 
 * Key Bindings
-#+BEGIN_SRC emacs-lisp
-  (use-package unfill
-    :bind (("M-q" . unfill-toggle)))
+  #+BEGIN_SRC emacs-lisp
+    (use-package unfill
+      :bind (("M-q" . unfill-toggle)))
 
-  (use-package mwim
-    :bind (("C-a" . mwim-beginning-of-code-or-line)
-	   ("C-e" . mwim-end-of-code-or-line)))
+    (use-package mwim
+      :bind (("C-a" . mwim-beginning-of-code-or-line)
+	     ("C-e" . mwim-end-of-code-or-line)))
 
-  ;; source: spacemacs' better default layer
-  (defun backward-kill-word-or-region ()
-    "Calls `kill-region' when a region is active and
-	  `backward-kill-word' otherwise."
-    (interactive)
-    (if (region-active-p)
-	(call-interactively 'kill-region)
-      (backward-kill-word 1)))
+    ;; source: spacemacs' better default layer
+    (defun backward-kill-word-or-region ()
+      "Calls `kill-region' when a region is active and
+	    `backward-kill-word' otherwise."
+      (interactive)
+      (if (region-active-p)
+	  (call-interactively 'kill-region)
+	(backward-kill-word 1)))
 
-  (global-set-key (kbd "C-w") 'backward-kill-word-or-region)
+    (global-set-key (kbd "C-w") 'backward-kill-word-or-region)
 
-  ;; Use shell-like backspace C-h, rebind help to C-?
-  (keyboard-translate ?\C-h ?\C-?)
-  (global-set-key (kbd "C-?") 'help-command)
-  (global-set-key (kbd "M-u") 'winner-undo)
-  (global-set-key (kbd "M-U") 'winner-redo)
-#+END_SRC
+    ;; Use shell-like backspace C-h, rebind help to C-?
+    (keyboard-translate ?\C-h ?\C-?)
+    (global-set-key (kbd "C-?") 'help-command)
+    (global-set-key (kbd "M-u") 'winner-undo)
+    (global-set-key (kbd "M-U") 'winner-redo)
+  #+END_SRC
