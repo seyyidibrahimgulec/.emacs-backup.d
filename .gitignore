@@ -53,5 +53,6 @@ flycheck_*.el
 
 README.el
 places
+.custom.el
 
 # End of https://www.gitignore.io/api/emacs
