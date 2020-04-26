@@ -176,3 +176,18 @@
   (global-set-key (kbd "M-u") 'winner-undo)
   (global-set-key (kbd "M-U") 'winner-redo)
 #+END_SRC
+* Programming Languages
+** Python
+#+BEGIN_SRC emacs-lisp
+  (use-package python
+    :bind (
+	   :map python-mode-map
+	   ("M-." . xref-find-definitions))
+    :config
+    (use-package pyvenv)
+    (setq python-shell-interpreter "ipython"
+	  python-shell-interpreter-args "-i --simple-prompt")
+    :hook
+    (python-mode . lsp)
+    )
+#+END_SRC
