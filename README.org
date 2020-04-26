@@ -8,7 +8,7 @@
   (add-hook 'after-save-hook 'tangle-config)
 #+end_src
 
-* Paket kaynakları
+* Package Resources
 #+BEGIN_SRC emacs-lisp
   (require 'package)
   (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
@@ -27,7 +27,7 @@
 	mac-option-modifier 'none)
 #+END_SRC
 
-* Paketler
+* Packages
 ** Use Package
 #+begin_src emacs-lisp
   (unless (package-installed-p 'use-package)
@@ -105,7 +105,7 @@
   (blink-cursor-mode -1)
 #+END_SRC
 
-* Keybindings
+* Key Bindings
 #+BEGIN_SRC emacs-lisp
   (use-package unfill
     :bind (("M-q" . unfill-toggle)))
