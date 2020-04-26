@@ -87,6 +87,14 @@
   :config
   (shackle-mode))
 #+END_SRC
+** Expand Region
+#+BEGIN_SRC emacs-lisp
+(use-package expand-region
+  :init
+  (setq expand-region-fast-keys-enabled nil
+        expand-region-subword-enabled t)
+  :bind (("C-t" . er/expand-region)))
+#+END_SRC
 * Better Defaults
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-message t)
