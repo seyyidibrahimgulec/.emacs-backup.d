@@ -17,10 +17,8 @@
   (package-initialize)
 #+END_SRC
 
-* Mac Key Bindings
+* Macos Key Bindings
 #+BEGIN_SRC emacs-lisp
-  (setq inhibit-startup-message t)
-
   (setq mac-option-key-is-meta nil
 	mac-command-key-is-meta t
 	mac-command-modifier 'meta
@@ -93,11 +91,21 @@
     (setq beacon-blink-when-point-moves-vertically 10)
     (beacon-mode 1))
 #+END_SRC
+** Shackle
+#+BEGIN_SRC emacs-lisp
+(use-package shackle
+  :init
+  (setq shackle-rules
+        '(("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.3)
+          (help-mode :align t :size 0.4 :select t)))
+  :defer nil
+  :config
+  (shackle-mode))
+#+END_SRC
 * Better Defaults
 #+BEGIN_SRC emacs-lisp
+  (setq inhibit-startup-message t)
   (winner-mode)
-
-
 
   (menu-bar-mode -1)
   (tool-bar-mode -1)
@@ -117,7 +125,7 @@
   ;; source: spacemacs' better default layer
   (defun backward-kill-word-or-region ()
     "Calls `kill-region' when a region is active and
-	`backward-kill-word' otherwise."
+	  `backward-kill-word' otherwise."
     (interactive)
     (if (region-active-p)
 	(call-interactively 'kill-region)
@@ -126,8 +134,8 @@
   (global-set-key (kbd "C-w") 'backward-kill-word-or-region)
 
   ;; Use shell-like backspace C-h, rebind help to C-?
-  (define-key key-translation-map [?\C-h] [?\C-?])
-  (bind-key* (kbd "C-?") 'help-command)
+  (keyboard-translate ?\C-h ?\C-?)
+  (global-set-key (kbd "C-?") 'help-command)
   (global-set-key (kbd "M-u") 'winner-undo)
   (global-set-key (kbd "M-U") 'winner-redo)
 #+END_SRC
