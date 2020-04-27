@@ -53,6 +53,12 @@
 *** Helm
 #+BEGIN_SRC emacs-lisp
   (use-package helm
+    :defer nil
+    :init
+    (setq
+     helm-M-x-always-save-history t
+     helm-display-function 'pop-to-buffer
+     savehist-additional-variables '(extended-command-history))
     :bind
     (("M-x" . helm-M-x)
      ("C-x C-f" . helm-find-files)
@@ -65,8 +71,10 @@
      ("TAB" . helm-execute-persistent-action)
      ("<tab>" . helm-execute-persistent-action)
      ("C-z" . helm-select-action)
-     ("C-w" . backward-kill-word))
-    )
+     ("C-w" . backward-kill-word)) ;; Fix C-w
+    :config
+    (helm-mode)
+    (savehist-mode))
 #+END_SRC
 *** Helm Projectile
 #+BEGIN_SRC emacs-lisp
@@ -110,7 +118,7 @@
 ** Multiple Cursors
 #+BEGIN_SRC emacs-lisp
   (use-package multiple-cursors
-    :init (setq mc/always-run-for-all t)
+    ;; :init (setq mc/always-run-for-all t)
     :bind (("C-M-n" . mc/mark-next-like-this)
 	   ("C-M-p" . mc/mark-previous-like-this)
 	   ("C-M-S-n" . mc/skip-to-next-like-this)
@@ -120,11 +128,73 @@
 	   ("C-M-<mouse-1>" . mc/add-cursor-on-click)))
 #+END_SRC
 ** Company
+*** Company
 #+BEGIN_SRC emacs-lisp
   ;; TODO: Add configuration
-  (use-package company)
+  (use-package company
+    :defer nil ;; açılışta çalıştır use package özelliği
+    :init
+    (setq company-idle-delay 0
+	  company-minimum-prefix-length 1
+	  company-tooltip-align-annotations t
+	  ;; Disable single-candidate and echo-area frontends:
+	  company-frontends '(company-box-frontend)
+	  ;; company-dabbrev-downcase nil
+	  company-dabbrev-ignore-case t)
+    :bind
+    (:map company-active-map
+	  ([return] . nil)
+	  ("RET" . nil)
+	  ("TAB" . company-complete-selection)
+	  ("<tab>" . company-complete-selection)
+	  ("C-n" . company-select-next)
+	  ("C-p" . company-select-previous))
+    :config
+    (global-company-mode))
   (use-package company-box)
 #+END_SRC
+*** Company Box
+#+BEGIN_SRC emacs-lisp
+(setq company-box-show-single-candidate t
+      company-box-icons-alist 'company-box-icons-all-the-icons
+      company-box-backends-colors nil ;; Same colors for all backends
+      company-box-icons-all-the-icons
+      (let ((all-the-icons-scale-factor 1)
+            (all-the-icons-default-adjust 0))
+        `((Unknown       . ,(all-the-icons-faicon "question" :face 'all-the-icons-purple)) ;;question-circle is also good
+          (Text          . ,(all-the-icons-faicon "file-text-o" :face 'all-the-icons-green))
+          (Method        . ,(all-the-icons-faicon "cube" :face 'all-the-icons-dcyan))
+          (Function      . ,(all-the-icons-faicon "cube" :face 'all-the-icons-green))
+          (Constructor   . ,(all-the-icons-faicon "cube" :face 'all-the-icons-dcyan))
+          (Field         . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
+          (Variable      . ,(all-the-icons-faicon "tag" :face 'all-the-icons-dpurple))
+          (Class         . ,(all-the-icons-faicon "cog" :face 'all-the-icons-red))
+          (Interface     . ,(all-the-icons-faicon "cogs" :face 'all-the-icons-red))
+          (Module        . ,(all-the-icons-alltheicon "less" :face 'all-the-icons-red))
+          (Property      . ,(all-the-icons-faicon "wrench" :face 'all-the-icons-red))
+          (Unit          . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
+          (Value         . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
+          (Enum          . ,(all-the-icons-faicon "file-text-o" :face 'all-the-icons-red))
+          (Keyword       . ,(all-the-icons-material "format_align_center" :face 'all-the-icons-red))
+          (Snippet       . ,(all-the-icons-material "content_paste" :face 'all-the-icons-red))
+          (Color         . ,(all-the-icons-material "palette" :face 'all-the-icons-red))
+          (File          . ,(all-the-icons-faicon "file" :face 'all-the-icons-red))
+          (Reference     . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
+          (Folder        . ,(all-the-icons-faicon "folder" :face 'all-the-icons-red))
+          (EnumMember    . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
+          (Constant      . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
+          (Struct        . ,(all-the-icons-faicon "cog" :face 'all-the-icons-red))
+          (Event         . ,(all-the-icons-faicon "bolt" :face 'all-the-icons-red))
+          (Operator      . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
+          (TypeParameter . ,(all-the-icons-faicon "cog" :face 'all-the-icons-red))
+          (Template      . ,(all-the-icons-faicon "bookmark" :face 'all-the-icons-dgreen)))))
+#+END_SRC
+*** Company Statistics
+#+begin_src emacs-lisp
+(use-package company-statistics
+  :hook (company-mode . company-statistics-mode))
+#+end_src
+
 ** LSP Mode
 *** LSP Mode
 #+BEGIN_SRC emacs-lisp
@@ -137,6 +207,49 @@
     :commands company-lsp)
 #+END_SRC
 
+** hl-todo
+#+BEGIN_SRC emacs-lisp
+  (use-package hl-todo
+    :defer nil
+    :init
+    ;; Better hl-todo colors, taken from spacemacs
+    (setq hl-todo-keyword-faces '(("TODO" . "#dc752f")
+				  ("NEXT" . "#dc752f")
+				  ("THEM" . "#2d9574")
+				  ("PROG" . "#4f97d7")
+				  ("OKAY" . "#4f97d7")
+				  ("DONT" . "#f2241f")
+				  ("FAIL" . "#f2241f")
+				  ("DONE" . "#86dc2f")
+				  ("NOTE" . "#b1951d")
+				  ("KLUDGE" . "#b1951d")
+				  ("HACK" . "#b1951d")
+				  ("TEMP" . "#b1951d")
+				  ("HOLD" . "#dc752f")
+				  ("FIXME" . "#dc752f")
+				  ("XXX+" . "#dc752f")
+				  ("\\?\\?\\?+" . "#dc752f")))
+    :config
+    (global-hl-todo-mode))
+#+END_SRC
+** Eglot
+#+BEGIN_SRC emacs-lisp
+  (use-package eglot)
+  ;; :defer t
+  ;; :init
+  ;; (setq eglot-ignored-server-capabilites '(:documentHighlightProvider
+  ;;                                          :hoverProvider
+  ;;                                          :signatureHelpProvider))
+  ;; :config
+  ;; ;; Flymake echo error at point fix. source:
+  ;; ;; https://github.com/joaotavora/eglot/issues/8#issuecomment-414149077
+  ;; (advice-add 'eglot-eldoc-function :around
+  ;;             (lambda (oldfun)
+  ;;               (let ((help (help-at-pt-kbd-string)))
+  ;;                 (if help (message "%s" help) (funcall oldfun)))))
+  ;; :hook
+  ;; (eglot-managed-mode . fk/company-enable-snippets))
+#+END_SRC
 * Better Defaults
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-message t)
@@ -188,6 +301,21 @@
     (setq python-shell-interpreter "ipython"
 	  python-shell-interpreter-args "-i --simple-prompt")
     :hook
-    (python-mode . lsp)
+    (python-mode . eglot-ensure)
     )
 #+END_SRC
+** Emacs Lisp
+*** Elisp Slime Nav
+#+BEGIN_SRC emacs-lisp
+  (use-package elisp-slime-nav
+    :bind (
+	   :map emacs-lisp-mode-map
+	   ("M-." . elisp-slime-nav-find-elisp-thing-at-point)))
+#+END_SRC
+
+*** Aggressive Indent
+#+begin_src emacs-lisp
+  (use-package aggressive-indent
+    :diminish
+    :hook (emacs-lisp-mode . aggressive-indent-mode))
+#+end_src
