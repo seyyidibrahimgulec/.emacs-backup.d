@@ -155,39 +155,42 @@
 #+END_SRC
 *** Company Box
 #+BEGIN_SRC emacs-lisp
-(setq company-box-show-single-candidate t
-      company-box-icons-alist 'company-box-icons-all-the-icons
-      company-box-backends-colors nil ;; Same colors for all backends
-      company-box-icons-all-the-icons
-      (let ((all-the-icons-scale-factor 1)
-            (all-the-icons-default-adjust 0))
-        `((Unknown       . ,(all-the-icons-faicon "question" :face 'all-the-icons-purple)) ;;question-circle is also good
-          (Text          . ,(all-the-icons-faicon "file-text-o" :face 'all-the-icons-green))
-          (Method        . ,(all-the-icons-faicon "cube" :face 'all-the-icons-dcyan))
-          (Function      . ,(all-the-icons-faicon "cube" :face 'all-the-icons-green))
-          (Constructor   . ,(all-the-icons-faicon "cube" :face 'all-the-icons-dcyan))
-          (Field         . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
-          (Variable      . ,(all-the-icons-faicon "tag" :face 'all-the-icons-dpurple))
-          (Class         . ,(all-the-icons-faicon "cog" :face 'all-the-icons-red))
-          (Interface     . ,(all-the-icons-faicon "cogs" :face 'all-the-icons-red))
-          (Module        . ,(all-the-icons-alltheicon "less" :face 'all-the-icons-red))
-          (Property      . ,(all-the-icons-faicon "wrench" :face 'all-the-icons-red))
-          (Unit          . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
-          (Value         . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
-          (Enum          . ,(all-the-icons-faicon "file-text-o" :face 'all-the-icons-red))
-          (Keyword       . ,(all-the-icons-material "format_align_center" :face 'all-the-icons-red))
-          (Snippet       . ,(all-the-icons-material "content_paste" :face 'all-the-icons-red))
-          (Color         . ,(all-the-icons-material "palette" :face 'all-the-icons-red))
-          (File          . ,(all-the-icons-faicon "file" :face 'all-the-icons-red))
-          (Reference     . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
-          (Folder        . ,(all-the-icons-faicon "folder" :face 'all-the-icons-red))
-          (EnumMember    . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
-          (Constant      . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
-          (Struct        . ,(all-the-icons-faicon "cog" :face 'all-the-icons-red))
-          (Event         . ,(all-the-icons-faicon "bolt" :face 'all-the-icons-red))
-          (Operator      . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
-          (TypeParameter . ,(all-the-icons-faicon "cog" :face 'all-the-icons-red))
-          (Template      . ,(all-the-icons-faicon "bookmark" :face 'all-the-icons-dgreen)))))
+  ;; (setq company-box-show-single-candidate t
+  ;;       company-box-icons-alist 'company-box-icons-all-the-icons
+  ;;       company-box-backends-colors nil ;; Same colors for all backends
+  ;;       company-box-icons-all-the-icons
+  ;;       (let ((all-the-icons-scale-factor 1)
+  ;;             (all-the-icons-default-adjust 0))
+  ;;         `((Unknown       . ,(all-the-icons-faicon "question" :face 'all-the-icons-purple)) ;;question-circle is also good
+  ;;           (Text          . ,(all-the-icons-faicon "file-text-o" :face 'all-the-icons-green))
+  ;;           (Method        . ,(all-the-icons-faicon "cube" :face 'all-the-icons-dcyan))
+  ;;           (Function      . ,(all-the-icons-faicon "cube" :face 'all-the-icons-green))
+  ;;           (Constructor   . ,(all-the-icons-faicon "cube" :face 'all-the-icons-dcyan))
+  ;;           (Field         . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
+  ;;           (Variable      . ,(all-the-icons-faicon "tag" :face 'all-the-icons-dpurple))
+  ;;           (Class         . ,(all-the-icons-faicon "cog" :face 'all-the-icons-red))
+  ;;           (Interface     . ,(all-the-icons-faicon "cogs" :face 'all-the-icons-red))
+  ;;           (Module        . ,(all-the-icons-alltheicon "less" :face 'all-the-icons-red))
+  ;;           (Property      . ,(all-the-icons-faicon "wrench" :face 'all-the-icons-red))
+  ;;           (Unit          . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
+  ;;           (Value         . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
+  ;;           (Enum          . ,(all-the-icons-faicon "file-text-o" :face 'all-the-icons-red))
+  ;;           (Keyword       . ,(all-the-icons-material "format_align_center" :face 'all-the-icons-red))
+  ;;           (Snippet       . ,(all-the-icons-material "content_paste" :face 'all-the-icons-red))
+  ;;           (Color         . ,(all-the-icons-material "palette" :face 'all-the-icons-red))
+  ;;           (File          . ,(all-the-icons-faicon "file" :face 'all-the-icons-red))
+  ;;           (Reference     . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
+  ;;           (Folder        . ,(all-the-icons-faicon "folder" :face 'all-the-icons-red))
+  ;;           (EnumMember    . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
+  ;;           (Constant      . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
+  ;;           (Struct        . ,(all-the-icons-faicon "cog" :face 'all-the-icons-red))
+  ;;           (Event         . ,(all-the-icons-faicon "bolt" :face 'all-the-icons-red))
+  ;;           (Operator      . ,(all-the-icons-faicon "tag" :face 'all-the-icons-red))
+  ;;           (TypeParameter . ,(all-the-icons-faicon "cog" :face 'all-the-icons-red))
+  ;;           (Template      . ,(all-the-icons-faicon "bookmark" :face 'all-the-icons-dgreen)))))
+  (use-package company-box
+    :load-path (lambda () (concat user-emacs-directory "load/company-box"))
+    :hook (company-mode . company-box-mode))
 #+END_SRC
 *** Company Statistics
 #+begin_src emacs-lisp
