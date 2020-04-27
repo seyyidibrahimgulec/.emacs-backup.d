@@ -253,6 +253,12 @@
   ;; :hook
   ;; (eglot-managed-mode . fk/company-enable-snippets))
 #+END_SRC
+** Undo Tree
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+    :config
+    (global-undo-tree-mode))
+#+END_SRC
 * Better Defaults
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-message t)
