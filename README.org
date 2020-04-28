@@ -281,6 +281,8 @@
   (winner-mode)
   (setq-default custom-file (concat user-emacs-directory ".custom.el"))
   (load custom-file)
+  (global-hl-line-mode t)
+  (add-to-list 'default-frame-alist '(fullscreen . fullboth)) ;; fullscreen on startup
 
   (menu-bar-mode -1)
   (tool-bar-mode -1)
