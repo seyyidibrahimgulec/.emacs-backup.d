@@ -93,7 +93,6 @@
 #+BEGIN_SRC emacs-lisp
   (use-package beacon
     :init
-    (setq beacon-blink-when-point-moves-vertically 10)
     (beacon-mode 1))
 #+END_SRC
 ** Shackle
@@ -258,6 +257,13 @@
   (use-package undo-tree
     :config
     (global-undo-tree-mode))
+#+END_SRC
+** Dimmer
+#+BEGIN_SRC emacs-lisp
+  (use-package dimmer
+    :defer t
+    :config
+    (setq dimmer-fraction 0.7))
 #+END_SRC
 * Better Defaults
 #+BEGIN_SRC emacs-lisp
