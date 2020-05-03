@@ -117,7 +117,7 @@
 ** Multiple Cursors
 #+BEGIN_SRC emacs-lisp
   (use-package multiple-cursors
-    ;; :init (setq mc/always-run-for-all t)
+    :init (setq mc/always-run-for-all t)
     :bind (("C-M-n" . mc/mark-next-like-this)
 	   ("C-M-p" . mc/mark-previous-like-this)
 	   ("C-M-S-n" . mc/skip-to-next-like-this)
@@ -275,6 +275,21 @@
     ;; 	 ("C-c C-p C-p" . webpaste-paste-buffer-or-region))
     )
 #+END_SRC
+** PlantUML
+#+BEGIN_SRC emacs-lisp
+  (use-package plantuml-mode
+    :defer t
+    :init
+    (setq plantuml-jar-path (concat user-emacs-directory "plantuml.jar")
+	  plantuml-default-exec-mode 'jar
+	  plantuml-indent-level 4)
+    ;;(setq-default plantuml-output-type "txt")
+    (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
+    (with-eval-after-load "org"
+      (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+      (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
+      (setq org-plantuml-jar-path plantuml-jar-path)))
+#+END_SRC
 * Better Defaults
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-message t)
@@ -282,7 +297,7 @@
   (setq-default custom-file (concat user-emacs-directory ".custom.el"))
   (load custom-file)
   (global-hl-line-mode t)
-  (add-to-list 'default-frame-alist '(fullscreen . fullboth)) ;; fullscreen on startup
+  (add-to-list 'default-frame-alist '(fullscreen . maximized)) ;; fullscreen on startup
 
   (menu-bar-mode -1)
   (tool-bar-mode -1)
