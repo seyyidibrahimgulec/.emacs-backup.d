@@ -298,6 +298,7 @@
   (load custom-file)
   (global-hl-line-mode t)
   (add-to-list 'default-frame-alist '(fullscreen . maximized)) ;; fullscreen on startup
+  (delete-selection-mode)
 
   (menu-bar-mode -1)
   (tool-bar-mode -1)
